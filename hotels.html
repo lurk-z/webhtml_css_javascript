@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โรงแรม - Jadoo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hotels-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+
+        .hotels-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hotels-header h1 {
+            font-size: 42px;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .search-btn {
+            padding: 12px 30px;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-end;
+            margin-top: 30px;
+        }
+
+        .search-btn:hover {
+            background: #f5a500;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(253, 176, 34, 0.3);
+        }
+
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .hotel-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .hotel-image {
+            width: 100%;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hotel-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .hotel-content {
+            padding: 25px;
+        }
+
+        .hotel-name {
+            font-size: 20px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .hotel-location {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .hotel-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .star-rating {
+            color: #FFD700;
+        }
+
+        .hotel-price {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hotel-features {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-dark);
+        }
+
+        .view-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #f5a500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(253, 176, 34, 0.3);
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 400px;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+        }
+
+        .custom-alert.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .custom-alert.info {
+            background: #2196F3;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hotels-container {
+                margin: 40px auto;
+                padding: 20px 10px;
+            }
+
+            .hotels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hotels-header h1 {
+                font-size: 28px;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-btn {
+                align-self: stretch;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">Jadoo</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="destinations.html">จุดหมายปลายทาง</a></li>
+                    <li><a href="hotels.html">โรงแรม</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="bookings.html" class="btn-login">การจองของฉัน</a>
+                    <a href="flights.html" class="btn-signup">จองเดี๋ยวนี้</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hotels Container -->
+    <div class="hotels-container">
+        <div class="hotels-header">
+            <h1>ค้นหาโรงแรม</h1>
+            <p>พบโรงแรมที่ดีที่สุดสำหรับการพักผ่อน</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <form id="hotelForm" class="search-form">
+                <div class="form-group">
+                    <label for="city">เมือง</label>
+                    <select id="city" name="city" required>
+                        <option value="">-- เลือกเมือง --</option>
+                        <option value="ลอนดอน">ลอนดอน</option>
+                        <option value="ปารีส">ปารีส</option>
+                        <option value="ดูไบ">ดูไบ</option>
+                        <option value="โตเกียว">โตเกียว</option>
+                        <option value="สิงคโปร์">สิงคโปร์</option>
+                        <option value="บาหลี">บาหลี</option>
+                        <option value="นิวยอร์ก">นิวยอร์ก</option>
+                        <option value="บันคอก">บันคอก</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="checkIn">วันที่เข้าพัก</label>
+                    <input type="date" id="checkIn" name="checkIn" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="checkOut">วันที่ออกจากที่พัก</label>
+                    <input type="date" id="checkOut" name="checkOut" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">จำนวนแขก</label>
+                    <select id="guests" name="guests" required>
+                        <option value="">-- เลือกจำนวนแขก --</option>
+                        <option value="1">1 คน</option>
+                        <option value="2">2 คน</option>
+                        <option value="3">3 คน</option>
+                        <option value="4">4 คน</option>
+                        <option value="5">5+ คน</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="search-btn">🔍 ค้นหา</button>
+            </form>
+        </div>
+
+        <!-- Hotels Grid -->
+        <div class="hotels-grid" id="hotelsGrid"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const hotels = [
+            {
+                name: 'The Ritz-Carlton London',
+                location: 'Green Park, London',
+                price: 8500,
+                rating: 4.9,
+                reviews: 500,
+                image: 'linear-gradient(135deg, #8B4513, #A0522D)',
+                badge: '5★ Luxury',
+                features: ['Spa', 'Restaurant', 'Pool']
+            },
+            {
+                name: 'Parisian Palace',
+                location: 'Champs-Élysées, Paris',
+                price: 7200,
+                rating: 4.8,
+                reviews: 420,
+                image: 'linear-gradient(135deg, #4169E1, #6495ED)',
+                badge: '5★ Luxury',
+                features: ['Wine Bar', 'Garden', 'Concierge']
+            },
+            {
+                name: 'Burj Al Arab',
+                location: 'Jumeirah Beach, Dubai',
+                price: 9800,
+                rating: 4.9,
+                reviews: 380,
+                image: 'linear-gradient(135deg, #FF8C00, #FFA500)',
+                badge: 'Ultra Luxury',
+                features: ['Beach', 'Helipad', 'Michelin']
+            },
+            {
+                name: 'Aman Tokyo',
+                location: 'Nihonbashi, Tokyo',
+                price: 6500,
+                rating: 4.8,
+                reviews: 310,
+                image: 'linear-gradient(135deg, #FF1493, #FF69B4)',
+                badge: '5★ Luxury',
+                features: ['Spa', 'Garden', 'Tea House']
+            },
+            {
+                name: 'Raffles Singapore',
+                location: 'Marina Square, Singapore',
+                price: 5800,
+                rating: 4.7,
+                reviews: 290,
+                image: 'linear-gradient(135deg, #228B22, #3CB371)',
+                badge: '5★ Luxury',
+                features: ['Pool', 'Gym', 'Lounge']
+            },
+            {
+                name: 'Bali Beachfront Resort',
+                location: 'Seminyak Beach, Bali',
+                price: 2200,
+                rating: 4.6,
+                reviews: 450,
+                image: 'linear-gradient(135deg, #FFB6C1, #FF1493)',
+                badge: '4★ Superior',
+                features: ['Beach', 'Pool', 'Restaurant']
+            },
+            {
+                name: 'Peninsula New York',
+                location: 'Fifth Avenue, NYC',
+                price: 8800,
+                rating: 4.8,
+                reviews: 380,
+                image: 'linear-gradient(135deg, #4A90E2, #357ABD)',
+                badge: '5★ Luxury',
+                features: ['Spa', 'Fine Dining', 'Rooftop']
+            },
+            {
+                name: 'Mandarin Oriental Bangkok',
+                location: 'Riverside, Bangkok',
+                price: 3500,
+                rating: 4.7,
+                reviews: 520,
+                image: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                badge: '5★ Luxury',
+                features: ['Spa', 'Thai Cuisine', 'River View']
+            }
+        ];
+
+        function renderHotels() {
+            const grid = document.getElementById('hotelsGrid');
+            grid.innerHTML = hotels.map(hotel => `
+                <div class="hotel-card">
+                    <div class="hotel-image" style="background: ${hotel.image};">
+                        <span class="hotel-badge">${hotel.badge}</span>
+                    </div>
+                    <div class="hotel-content">
+                        <h3 class="hotel-name">${hotel.name}</h3>
+                        <p class="hotel-location">📍 ${hotel.location}</p>
+                        
+                        <div class="hotel-rating">
+                            <span class="star-rating">★★★★★</span>
+                            <span>${hotel.rating} (${hotel.reviews} reviews)</span>
+                        </div>
+
+                        <div class="hotel-price">฿${hotel.price.toLocaleString()} / คืนที่</div>
+
+                        <div class="hotel-features">
+                            ${hotel.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
+                        </div>
+
+                        <button class="view-btn" onclick="bookHotel('${hotel.name}')">ดูและจอง</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function bookHotel(name) {
+            sessionStorage.setItem('selectedHotel', name);
+            showAlert('เลือก ' + name + ' แล้ว', 'info');
+            setTimeout(() => {
+                window.location.href = 'flights.html';
+            }, 1500);
+        }
+
+        // Load hotels on page load
+        document.addEventListener('DOMContentLoaded', renderHotels);
+    </script>
+</body>
+</html>

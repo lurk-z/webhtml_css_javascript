@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จองเที่ยวบิน - Jadoo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .flights-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+
+        .flights-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .flights-header h1 {
+            font-size: 36px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #f5a500;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(253, 176, 34, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 400px;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+        }
+
+        .custom-alert.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .custom-alert.error {
+            background: #f44336;
+            color: white;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            color: #1565c0;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .form-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .form-section-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+            color: var(--text-light);
+        }
+
+        .form-section-divider span {
+            flex: 1;
+        }
+
+        .form-section-divider::before,
+        .form-section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .flights-container {
+                margin: 40px auto;
+                padding: 20px 10px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .flights-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">Jadoo</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="destinations.html">จุดหมายปลายทาง</a></li>
+                    <li><a href="hotels.html">โรงแรม</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="bookings.html" class="btn-login">การจองของฉัน</a>
+                    <a href="index.html" class="btn-signup">กลับหน้าแรก</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flights Container -->
+    <div class="flights-container">
+        <div class="flights-header">
+            <h1>จองเที่ยวบินของคุณ</h1>
+            <p>ค้นหาและจองเที่ยวบินที่ดีที่สุด</p>
+        </div>
+
+        <div class="booking-form">
+            <div class="info-box">
+                ℹ️ กรุณากรอกข้อมูลการจองให้ครบถ้วน การจองของคุณจะถูกบันทึกและสามารถดูได้ในส่วน "การจองของฉัน"
+            </div>
+
+            <form id="bookingForm">
+                <!-- Destination Section -->
+                <div class="form-section">
+                    <h3>📍 เลือกจุดหมายปลายทาง</h3>
+                    <div class="form-group">
+                        <label for="destination">จุดหมายปลายทาง</label>
+                        <select id="destination" name="destination" required>
+                            <option value="">-- เลือกจุดหมายปลายทาง --</option>
+                            <option value="ลอนดอน สหราชอาณาจักร">ลอนดอน สหราชอาณาจักร</option>
+                            <option value="ปารีส ฝรั่งเศส">ปารีส ฝรั่งเศส</option>
+                            <option value="ดูไบ สหรัฐอาหรับเอมิเรตส์">ดูไบ สหรัฐอาหรับเอมิเรตส์</option>
+                            <option value="โตเกียว ญี่ปุ่น">โตเกียว ญี่ปุ่น</option>
+                            <option value="สิงคโปร์">สิงคโปร์</option>
+                            <option value="บันคอก ประเทศไทย">บันคอก ประเทศไทย</option>
+                            <option value="นิวยอร์ก สหรัฐอเมริกา">นิวยอร์ก สหรัฐอเมริกา</option>
+                            <option value="บาหลี อินโดนีเซีย">บาหลี อินโดนีเซีย</option>
+                        </select>
+                    </div>
+                </div>
+
+                <script>
+                    // Load selected destination from sessionStorage
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const selectedDest = sessionStorage.getItem('selectedDestination');
+                        if (selectedDest) {
+                            document.getElementById('destination').value = selectedDest;
+                            sessionStorage.removeItem('selectedDestination');
+                        }
+                    });
+                </script>
+
+                <!-- Date Section -->
+                <div class="form-section">
+                    <h3>📅 เลือกวันเดินทาง</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">วันเริ่มต้น</label>
+                            <input type="date" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">วันสิ้นสุด</label>
+                            <input type="date" id="endDate" name="endDate" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travelers Section -->
+                <div class="form-section">
+                    <h3>👥 จำนวนผู้เดินทาง</h3>
+                    <div class="form-group">
+                        <label for="travelers">จำนวนผู้เดินทาง</label>
+                        <select id="travelers" name="travelers" required>
+                            <option value="">-- เลือกจำนวนผู้เดินทาง --</option>
+                            <option value="1">1 คน</option>
+                            <option value="2">2 คน</option>
+                            <option value="3">3 คน</option>
+                            <option value="4">4 คน</option>
+                            <option value="5">5 คน</option>
+                            <option value="6">6 คน</option>
+                            <option value="7">7 คน</option>
+                            <option value="8">8 คน</option>
+                            <option value="มากกว่า 8">มากกว่า 8 คน</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Passenger Information Section -->
+                <div class="form-section">
+                    <h3>✈️ ข้อมูลผู้โดยสาร</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">ชื่อจริง</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="เช่น สมชาย" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">นามสกุล</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="เช่น สมิทธิ์" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">อีเมล</label>
+                            <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">เบอร์โทรศัพท์</label>
+                            <input type="tel" id="phone" name="phone" placeholder="0812345678" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">🎫 ยืนยันการจอง</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

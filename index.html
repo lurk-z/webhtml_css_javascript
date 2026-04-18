@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadoo - ท่องเที่ยวสุขสวรรค์</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">Jadoo</div>
+                <ul class="nav-menu">
+                    <li><a href="#home">หน้าแรก</a></li>
+                    <li><a href="destinations.html">จุดหมายปลายทาง</a></li>
+                    <li><a href="hotels.html">โรงแรม</a></li>
+                    <li><a href="flights.html">เที่ยวบิน</a></li>
+                    <li><a href="bookings.html">การจอง</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">เข้าสู่ระบบ</a>
+                    <a href="signup.html" class="btn-signup">สมัครสมาชิก</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <p class="subtitle">ท่องเที่ยวสัญชาติที่ดีที่สุดของโลก</p>
+                <h1 class="hero-title">ท่องเที่ยว สนุก<br>และใช้ชีวิตใหม่</h1>
+                <p class="hero-description">ได้รับการออกแบบเพื่อให้คุณสามารถเพลิดเพลินไปกับการท่องเที่ยว</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="document.querySelector('#destinations').scrollIntoView({behavior: 'smooth'})">ค้นหาเพิ่มเติม</button>
+                    <button class="btn btn-secondary" onclick="alert('หากต้องการดูวิดีโอสาธิตนั่น')">▶ ดูวิดีโอ</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="traveler-image"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Destinations Section -->
+    <section class="destinations" id="destinations">
+        <div class="container">
+            <h2 class="section-title">จุดหมายปลายทางยอดนิยม</h2>
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-image london"></div>
+                    <h3>ลอนดอน สหราชอาณาจักร</h3>
+                    <p class="price">฿3,500</p>
+                    <p class="rating">★ 4.8 (250)</p>
+                </div>
+                <div class="destination-card">
+                    <div class="destination-image paris"></div>
+                    <h3>ปารีส ฝรั่งเศส</h3>
+                    <p class="price">฿4,200</p>
+                    <p class="rating">★ 4.9 (320)</p>
+                </div>
+                <div class="destination-card">
+                    <div class="destination-image dubai"></div>
+                    <h3>ดูไบ สหรัฐอาหรับเอมิเรตส์</h3>
+                    <p class="price">฿3,800</p>
+                    <p class="rating">★ 4.7 (180)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>เริ่มการท่องเที่ยวของคุณในวันนี้</h2>
+            <p>ลงทะเบียนทันทีเพื่อรับส่วนลด 20% สำหรับการจองครั้งแรกของคุณ</p>
+            <a href="signup.html" class="btn btn-primary">สมัครสมาชิกฟรี</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Jadoo Travel. สิ่งที่สงวนไว้ทั้งหมด</p>
+            <div class="footer-links">
+                <a href="#">นโยบายความเป็นส่วนตัว</a>
+                <a href="#">เงื่อนไขการใช้งาน</a>
+                <a href="#">ติดต่อเรา</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

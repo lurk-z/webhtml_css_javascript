@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การจอง - Jadoo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .booking-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .booking-header h1 {
+            font-size: 36px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .new-booking-btn {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .new-booking-btn:hover {
+            background: #f5a500;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(253, 176, 34, 0.3);
+        }
+
+        .booking-card {
+            background: white;
+            border-left: 5px solid var(--accent-yellow);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .booking-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .booking-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .booking-id {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .booking-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: var(--text-dark);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state h2 {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 400px;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+        }
+
+        .custom-alert.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .custom-alert.error {
+            background: #f44336;
+            color: white;
+        }
+
+        .custom-alert.info {
+            background: #2196F3;
+            color: white;
+        }
+
+        .user-profile {
+            background: linear-gradient(135deg, var(--secondary-color), #2d5aa8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .user-profile h2 {
+            margin-bottom: 10px;
+        }
+
+        .user-profile p {
+            opacity: 0.9;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-cancel {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #d32f2f;
+        }
+
+        .btn-edit {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-edit:hover {
+            background: #ff5252;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">Jadoo</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="destinations.html">จุดหมายปลายทาง</a></li>
+                    <li><a href="hotels.html">โรงแรม</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">เข้าสู่ระบบ</a>
+                    <a href="signup.html" class="btn-signup">สมัครสมาชิก</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bookings Container -->
+    <div class="booking-container">
+        <div class="booking-header">
+            <h1>การจองของฉัน</h1>
+            <a href="flights.html" class="new-booking-btn">+ จองเที่ยวบินใหม่</a>
+        </div>
+
+        <div id="userProfileSection"></div>
+        <div id="bookingsContainer"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function loadBookings() {
+            const user = checkLogin();
+            
+            if (!user) {
+                showAlert('กรุณาเข้าสู่ระบบเพื่อดูการจองของคุณ', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+
+            // Show user profile
+            const profileSection = document.getElementById('userProfileSection');
+            profileSection.innerHTML = `
+                <div class="user-profile">
+                    <h2>สวัสดี, ${user.firstName} ${user.lastName}</h2>
+                    <p>อีเมล: ${user.email}</p>
+                    <p>สมัครสมาชิก: ${user.registeredDate}</p>
+                </div>
+            `;
+
+            // Load bookings
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            const userBookings = bookings.filter(b => b.email === user.email);
+
+            const container = document.getElementById('bookingsContainer');
+
+            if (userBookings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>ยังไม่มีการจอง</h2>
+                        <p>คุณยังไม่ได้ทำการจองใด ๆ</p>
+                        <a href="flights.html" class="btn btn-primary">ค้นหาและจองเที่ยวบินเลย</a>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = userBookings.map((booking, index) => `
+                    <div class="booking-card">
+                        <div class="booking-id">รหัสการจอง: ${booking.bookingId}</div>
+                        <h3>${booking.destination}</h3>
+                        
+                        <div class="booking-info">
+                            <div class="info-item">
+                                <span class="info-label">วันเริ่มต้น</span>
+                                ${new Date(booking.startDate).toLocaleDateString('th-TH')}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">วันสิ้นสุด</span>
+                                ${new Date(booking.endDate).toLocaleDateString('th-TH')}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">จำนวนผู้เดินทาง</span>
+                                ${booking.travelers} คน
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">ผู้ติดต่อ</span>
+                                ${booking.firstName} ${booking.lastName}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">เบอร์โทรศัพท์</span>
+                                ${booking.phone}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">วันที่จอง</span>
+                                ${booking.bookingDate}
+                            </div>
+                        </div>
+
+                        <div class="booking-actions">
+                            <button class="btn-edit" onclick="editBooking(${index})">แก้ไข</button>
+                            <button class="btn-cancel" onclick="cancelBooking(${index})">ยกเลิก</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function cancelBooking(index) {
+            if (confirm('คุณแน่ใจหรือว่าต้องการยกเลิกการจองนี้?')) {
+                const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+                bookings.splice(index, 1);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                showAlert('ยกเลิกการจองสำเร็จ', 'success');
+                loadBookings();
+            }
+        }
+
+        function editBooking(index) {
+            alert('ฟังก์ชันแก้ไขการจองจะเปิดใช้งานในเร็ว ๆ นี้');
+        }
+
+        // Load bookings on page load
+        document.addEventListener('DOMContentLoaded', loadBookings);
+    </script>
+</body>
+</html>

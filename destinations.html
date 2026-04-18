@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จุดหมายปลายทาง - Jadoo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .destinations-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+
+        .destinations-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .destinations-header h1 {
+            font-size: 42px;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .destinations-header p {
+            color: var(--text-light);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--accent-yellow);
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+        }
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .destination-card-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .destination-card-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+        }
+
+        .destination-card-content {
+            padding: 25px;
+        }
+
+        .destination-card h3 {
+            font-size: 20px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .destination-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .price {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .destination-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .destination-features {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: #f5f5f5;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .book-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #f5a500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(253, 176, 34, 0.3);
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 400px;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+        }
+
+        .custom-alert.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .custom-alert.info {
+            background: #2196F3;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .destinations-container {
+                margin: 40px auto;
+                padding: 20px 10px;
+            }
+
+            .destination-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .destinations-header h1 {
+                font-size: 28px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">Jadoo</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">หน้าแรก</a></li>
+                    <li><a href="destinations.html">จุดหมายปลายทาง</a></li>
+                    <li><a href="hotels.html">โรงแรม</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="bookings.html" class="btn-login">การจองของฉัน</a>
+                    <a href="flights.html" class="btn-signup">จองเดี๋ยวนี้</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Destinations Container -->
+    <div class="destinations-container">
+        <div class="destinations-header">
+            <h1>สำรวจจุดหมายปลายทาง</h1>
+            <p>ค้นพบสถานที่ท่องเที่ยวที่สวยงามที่สุดทั่วโลก</p>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterByPrice('all')">ทั้งหมด</button>
+            <button class="filter-btn" onclick="filterByPrice('budget')">บริเวณประหยัด</button>
+            <button class="filter-btn" onclick="filterByPrice('mid')">ระดับกลาง</button>
+            <button class="filter-btn" onclick="filterByPrice('luxury')">หรูหรา</button>
+        </div>
+
+        <div class="destination-grid" id="destinationGrid"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const destinations = [
+            {
+                name: 'ลอนดอน สหราชอาณาจักร',
+                price: 3500,
+                rating: 4.8,
+                reviews: 250,
+                description: 'ไปเยี่ยมชมบิ๊กเบน พระราชวังบัคกิงแฮม และหอลอนดอนอาย',
+                image: 'linear-gradient(135deg, #8B4513, #D2691E)',
+                features: ['ประวัติศาสตร์', 'เมือง', 'วัฒนธรรม'],
+                category: 'mid'
+            },
+            {
+                name: 'ปารีส ฝรั่งเศส',
+                price: 4200,
+                rating: 4.9,
+                reviews: 320,
+                description: 'เมืองแห่งความรัก พร้อมหอไอเฟล พิพิธภัณฑ์ลูฟร์ และร้านอาหาร',
+                image: 'linear-gradient(135deg, #4169E1, #87CEEB)',
+                features: ['โรแมนติก', 'ศิลปะ', 'อาหารวัฒนธรรม'],
+                category: 'luxury'
+            },
+            {
+                name: 'ดูไบ สหรัฐอาหรับเอมิเรตส์',
+                price: 3800,
+                rating: 4.7,
+                reviews: 180,
+                description: 'ส่วนผสมของการออกแบบสมัยใหม่และโครงสร้างทะเลทราย',
+                image: 'linear-gradient(135deg, #FF8C00, #FFD700)',
+                features: ['หรูหรา', 'ช้อปปิ้ง', 'ทะเลทราย'],
+                category: 'luxury'
+            },
+            {
+                name: 'โตเกียว ญี่ปุ่น',
+                price: 2800,
+                rating: 4.6,
+                reviews: 220,
+                description: 'ประสบการณ์การผสมผสานระหว่างประเพณีและเทคโนโลยีที่ทันสมัย',
+                image: 'linear-gradient(135deg, #FF1493, #FF69B4)',
+                features: ['เทคโนโลยี', 'ประเพณี', 'อาหาร'],
+                category: 'mid'
+            },
+            {
+                name: 'สิงคโปร์',
+                price: 2200,
+                rating: 4.5,
+                reviews: 150,
+                description: 'เมืองสวนที่สะอาดสวยและสมบูรณ์แบบสำหรับการท่องเที่ยว',
+                image: 'linear-gradient(135deg, #228B22, #32CD32)',
+                features: ['สวน', 'สำลัก', 'ข้าวแกง'],
+                category: 'budget'
+            },
+            {
+                name: 'บาหลี อินโดนีเซีย',
+                price: 1500,
+                rating: 4.7,
+                reviews: 380,
+                description: 'ชายหาดสวยงาม วัดโบราณ และสวรรค์สำหรับนักผจญภัย',
+                image: 'linear-gradient(135deg, #FFB6C1, #FF69B4)',
+                features: ['ชายหาด', 'วัดพระ', 'ธรรมชาติ'],
+                category: 'budget'
+            },
+            {
+                name: 'นิวยอร์ก สหรัฐอเมริกา',
+                price: 4500,
+                rating: 4.8,
+                reviews: 290,
+                description: 'เมืองที่ไม่นอนหลับที่มีสิ่งมหัศจรรย์และศิลปะ',
+                image: 'linear-gradient(135deg, #4A90E2, #357ABD)',
+                features: ['เมือง', 'ศิลปะ', 'ช้อปปิ้ง'],
+                category: 'luxury'
+            },
+            {
+                name: 'บันคอก ประเทศไทย',
+                price: 1200,
+                rating: 4.9,
+                reviews: 450,
+                description: 'เมืองสีและแสงที่มีวัดฟ้อนด์และตลาดลอย',
+                image: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                features: ['วัดพระ', 'อาหาร', 'ตลาด'],
+                category: 'budget'
+            }
+        ];
+
+        function renderDestinations(filter = 'all') {
+            const grid = document.getElementById('destinationGrid');
+            
+            const filtered = filter === 'all' ? destinations : destinations.filter(d => d.category === filter);
+            
+            grid.innerHTML = filtered.map(dest => `
+                <div class="destination-card">
+                    <div class="destination-card-image" style="background: ${dest.image};"></div>
+                    <div class="destination-card-content">
+                        <h3>${dest.name}</h3>
+                        <div class="destination-card-meta">
+                            <div class="price">฿${dest.price.toLocaleString()}</div>
+                            <div class="rating">
+                                ★ ${dest.rating} (${dest.reviews})
+                            </div>
+                        </div>
+                        <p>${dest.description}</p>
+                        <div class="destination-features">
+                            ${dest.features.map(f => `<span class="feature-badge">${f}</span>`).join('')}
+                        </div>
+                        <a href="flights.html" class="book-btn" onclick="bookDestination('${dest.name}')">จองเดี๋ยวนี้</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterByPrice(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderDestinations(category);
+        }
+
+        function bookDestination(name) {
+            event.preventDefault();
+            // Set the destination in session storage
+            sessionStorage.setItem('selectedDestination', name);
+            window.location.href = 'flights.html';
+        }
+
+        // Load destinations on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDestinations();
+        });
+    </script>
+</body>
+</html>
